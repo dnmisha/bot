@@ -83,7 +83,7 @@ use bot\InputFile;
 use bot\object\Error;
 
 $chat_id = Bot::$chat->getId();
-$file = new InputFile('@web/favicon.ico');
+$file = new InputFile('@webroot/favicon.ico');
 
 $response = Bot::$api->sendPhoto()
     ->setChatId($chat_id)
