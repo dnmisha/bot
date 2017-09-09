@@ -5,6 +5,7 @@ Read our wiki in [here](https://github.com/mehdikhody/bot/wiki).
 [![Telegram Bot API PHP SDK](https://img.shields.io/badge/framework-yii2-lightgrey.svg)](http://www.yiiframework.com/)
 [![Composer](https://img.shields.io/packagist/v/khoram/bot.svg)](https://packagist.org/packages/khoram/bot)
 [![Downloads](https://img.shields.io/packagist/dt/khoram/bot.svg)](https://packagist.org/packages/khoram/bot)
+[![Github All Releases](https://img.shields.io/github/downloads/atom/atom/total.svg)]()
 [![License](https://img.shields.io/dub/l/vibe-d.svg)](https://github.com/mehdikhody/bot/blob/master/LICENSE)
 
 <p align="center">
