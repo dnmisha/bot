@@ -2,8 +2,8 @@
 ### Wiki
 Read our wiki in [here](https://github.com/mehdikhody/bot/wiki).
 
-![Telegram Bot API PHP SDK](https://img.shields.io/badge/framework-yii2-lightgrey.svg)
-![Composer](https://img.shields.io/packagist/v/symfony/symfony.svg)
+[![Telegram Bot API PHP SDK](https://img.shields.io/badge/framework-yii2-lightgrey.svg)](http://www.yiiframework.com/)
+[![Composer](https://img.shields.io/packagist/v/khoram/bot.svg)](https://packagist.org/packages/khoram/bot)
 
 <p align="center">
     
