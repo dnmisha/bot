@@ -2,6 +2,13 @@
 ### Wiki
 Read our wiki in [here](https://github.com/mehdikhody/bot/wiki).
 
+![Telegram Bot API PHP SDK](https://img.shields.io/badge/framework-yii2-lightgrey.svg)
+![Composer](https://img.shields.io/packagist/v/symfony/symfony.svg)
+
+<p align="center">
+    
+</p>
+
 ### An introduction for developers
 Bots are third-party applications that run inside Telegram. Users can interact with bots by sending them messages, commands and [inline requests](https://core.telegram.org/bots#inline-mode). You control your bots using HTTPS requests to our [bot API](https://core.telegram.org/bots/api).
 
