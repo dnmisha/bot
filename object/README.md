@@ -3,7 +3,7 @@ All types used in the Bot API responses are represented as PHP-objects.
 > Optional fields may be not returned when irrelevant.
 
 
-##### Class bot\object\User
+### Class bot\object\User
 This object represents a Telegram user or bot.
 
 Method|Field|Type|Description
@@ -15,7 +15,7 @@ hasLastName(), getLastName()|last_name|String|Optional. User‘s or bot’s last
 hasUsername(), getUsername()|username|String|Optional. User‘s or bot’s username
 hasLanguageCode(), getLanguageCode()|language_code|String|Optional. IETF language tag of the user's language
 
-##### Class bot\object\Chat
+### Class bot\object\Chat
 This object represents a chat.
 
 Method|Field|Type|Description
