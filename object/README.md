@@ -1,7 +1,8 @@
 ## Available types
 All types used in the Bot API responses are represented as PHP-objects.
 > Optional fields may be not returned when irrelevant.
-
+ 
+ ---
 
 ### Class bot\object\User
 This object represents a Telegram user or bot.
