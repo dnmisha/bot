@@ -16,6 +16,8 @@ hasLastName(), getLastName()|last_name|String|Optional. User‘s or bot’s last
 hasUsername(), getUsername()|username|String|Optional. User‘s or bot’s username
 hasLanguageCode(), getLanguageCode()|language_code|String|Optional. IETF language tag of the user's language
 
+---
+
 ### Class bot\object\Chat
 This object represents a chat.
 
@@ -33,3 +35,4 @@ hasDescription(), getDescription()|description|String|Optional. Description, for
 hasInviteLink(), getInviteLink()|invite_link|String|Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat.
 hasPinnedMessage(), getPinnedMessage()|pinned_message|Message|Optional. Pinned message, for supergroups. Returned only in getChat.
 
+---
