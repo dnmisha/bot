@@ -4,7 +4,7 @@ All types used in the Bot API responses are represented as PHP-objects.
  
  ---
 
-### Class bot\object\User
+### User
 This object represents a Telegram user or bot.
 
 Method|Field|Type|Description
@@ -18,7 +18,7 @@ hasLanguageCode(), getLanguageCode()|language_code|String|Optional. IETF languag
 
 ---
 
-### Class bot\object\Chat
+### Chat
 This object represents a chat.
 
 Method|Field|Type|Description
