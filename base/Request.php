@@ -155,19 +155,6 @@ class Request extends Object
     {
         $properties = $this->properties;
         foreach ($properties as $key => $value) {
-            if (is_string($value)) {
-                $path = \Yii::getAlias($value, false);
-                if (
-                    is_string($path) &&
-                    ($realPath = realpath($path)) &&
-                    file_exists($realPath) &&
-                    !is_dir($realPath)
-                ) {
-                    $value = new InputFile($realPath);
-                    $this->set($key, $value);
-                }
-            }
-
             if (
                 $value instanceof InputFile ||
                 filter_var($value, FILTER_VALIDATE_URL)
