@@ -6,13 +6,13 @@ use yii\helpers\ArrayHelper as AH;
 
 /**
  * Curl is a library that lets you make HTTP requests in PHP.
+ * This Class help your manage your curl requests better.
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class Curl
  * @package bot\helper
- * @link http://php.net/manual/de/function.curl-init.php
  */
 class Curl
 {
@@ -244,6 +244,8 @@ class Curl
             if ($error == 7) $this->code = 'timeout';
             else {
                 $message = 'Curl request failed: ' . curl_error($this->_curl);
+
+                \Bot::error($message);
                 throw new Exception($message, $error);
             }
         }

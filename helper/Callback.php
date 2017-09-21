@@ -3,91 +3,83 @@
 use yii\helpers\ArrayHelper as AH;
 
 /**
- * Call a callback with an array of parameters.
+ * Callbacks / Callables
+ * Callbacks can be denoted by callable type hint as of PHP 5.4.
+ * This documentation used callback type information for the same purpose.
  *
- * @property mixed $result
+ * Some functions like call_user_func() or usort() accept user-defined callback
+ * functions as a parameter. Callback functions can not only be simple functions,
+ * but also object methods, including static class methods.
+ *
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class Callback
  * @package bot\helper
- * @link http://php.net/manual/de/function.call-user-func.php
- * @link http://php.net/manual/de/function.call-user-func-array.php
+ * @link http://php.net/manual/en/language.types.callable.php
  */
 abstract class Callback
 {
 
     /**
-     * Call a user function given with an
-     * array of parameters
+     * Call callback function by special parameters.
      *
      * @param string|array|callable $callback
      * @param array $params
      * @return mixed
      */
-    public static function call($callback, array $params = [])
+    public static function call($callback, $params = [])
     {
-        if (is_array($callback) && sizeof($callback) == 2) {
-            $class = $callback[0];
-            $method = $callback[1];
-            return self::callMethod($class, $method, $params);
-        }
-
-        return self::callFunction($callback, $params);
+        return self::apply($callback, $params);
     }
 
     /**
-     * Call a user function given with an
-     * array of parameters
+     * Apply callback function by special parameters.
      *
-     * @param string|callable $callback
+     * @param string|array|callable $callback
      * @param array $params
      * @return mixed
      */
-    public static function callFunction($callback, array $params = [])
+    public static function apply($callback, $params = [])
     {
-        $reflection = new \ReflectionFunction($callback);
-        $arguments = self::getArguments($reflection, $params);
+        if (is_array($callback)) {
+            $class = $callback[0];
+            $method = $callback[1];
+            $reflection = new \ReflectionMethod($class, $method);
+        }
+        else {
+            $reflection = new \ReflectionFunction($callback);
+        }
+
+        $arguments = self::__arguments($reflection, $params);
         return call_user_func_array($callback, $arguments);
     }
 
     /**
-     * Call a user function given with an
-     * array of parameters
-     *
-     * @param string|object $class
-     * @param string $method
-     * @param array $params
-     * @return mixed
-     */
-    public static function callMethod($class, $method, array $params = [])
-    {
-        $reflection = new \ReflectionMethod($class, $method);
-        $arguments = self::getArguments($reflection, $params);
-        return call_user_func_array([$class, $method], $arguments);
-    }
-
-    /**
-     * @param object $reflection
+     * @param \ReflectionFunction|\ReflectionMethod $reflection
      * @param array $params
      * @return array
      */
-    private static function getArguments($reflection, array $params = [])
+    private static function __arguments($reflection, $params = [])
     {
-        $output = [];
+        $oldParams = (array) $params;
+
+        $params = [];
         $arguments = $reflection->getParameters();
         foreach ($arguments as $argument) {
-            /* @var object $argument */
             $name = $argument->getName();
-            if (AH::keyExists($name, $params)) {
-                $output[] = $params[$name];
+
+            $default = null;
+            if ($argument->isDefaultValueAvailable()) {
+                $default = $argument->getDefaultValue();
             }
-            else {
-                $output[] = $argument->getDefaultValue();
-            }
+
+            $value = AH::getValue($oldParams, $name, $default);
+            $params[$name] = $value;
         }
 
-        return $output;
+        $params['_params'] = $params;
+        return $params;
     }
 }

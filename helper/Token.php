@@ -18,7 +18,7 @@ use yii\base\InvalidParamException;
  * @property string $token
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class Token
  * @package bot\helper
@@ -50,9 +50,10 @@ class Token extends Object
     /**
      * Token constructor.
      * @param string $token
+     * @param bool $throw status of show error
      * @throws InvalidParamException
      */
-    public function __construct($token)
+    public function __construct($token, $throw = true)
     {
         $pattern = self::EXPRESSION_PATTERN;
         $preg = preg_match($pattern, $token, $matches);
@@ -61,7 +62,7 @@ class Token extends Object
             $this->_key = $matches[2];
             $this->_id = intval($matches[1]);
         }
-        else {
+        else if ($throw) {
             $message = 'Invalid Token: ' . $token;
             throw new InvalidParamException($message);
         }

@@ -1,9 +1,11 @@
 <?php namespace bot\base;
 
 use yii\helpers\Json;
-use bot\helper\Property;
+use yii\helpers\Inflector;
 use yii\helpers\ArrayHelper as AH;
+use yii\base\Object as baseObject;
 use yii\base\InvalidParamException;
+use yii\base\UnknownMethodException;
 
 /**
  * Object is the base class that implements the *property* feature.
@@ -21,32 +23,13 @@ use yii\base\InvalidParamException;
  * In this case, trying to modify the property
  * value will cause an exception.
  *
- * Besides the property feature, Object also introduces an important
- * object initialization life cycle. In particular, creating an new
- * instance of Object or its derived class will involve
- * the following life cycles sequentially:
- *
- * 1. the class constructor is invoked;
- * 2. object properties are initialized according to the given configuration;
- * 3. the `init()` method is invoked.
- *
- * In the above, both Step 2 and 3 occur at the end of the class constructor.
- * It is recommended that you perform object initialization in the `init()`
- * method because at that stage, the object
- * configuration is already applied.
- *
- * That is, a `$config` parameter (defaults to `[]`) should be
- * declared as the last parameter of the constructor,
- * and the parent implementation should be called
- * at the end of the constructor.
- *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class Object
  * @package bot\base
  */
-class Object extends \yii\base\Object
+abstract class Object extends baseObject
 {
 
     /**
@@ -57,6 +40,42 @@ class Object extends \yii\base\Object
      * @var array
      */
     protected $properties = [];
+
+    /**
+     * Get empty of all properties that set in the past,
+     * returning an object to its base state.
+     *
+     * @return $this
+     */
+    public function _empty()
+    {
+        $this->properties = [];
+        return $this;
+    }
+
+    /**
+     * Converting an object to a string when the object
+     * needs to be treated like a string.
+     *
+     * @return string
+     */
+    public function _json()
+    {
+        $array = $this->_array();
+        return Json::encode($array);
+    }
+
+    /**
+     * Converting an object to a string when the object
+     * needs to be treated like a array.
+     *
+     * @return array
+     */
+    public function _array()
+    {
+        $properties = $this->properties;
+        return $this->__arrayMap($properties);
+    }
 
     /**
      * Checks if a property is set, i.e. defined and not null.
@@ -149,36 +168,39 @@ class Object extends \yii\base\Object
      *
      * Do not call this method directly as it is a PHP magic method that
      * will be implicitly called when an unknown method is being invoked.
-     *
      * @param string $name the method name
      * @param array $params method parameters
+     * @throws UnknownMethodException when calling unknown method
+     * @throws InvalidParamException when didn't sent params
      * @return mixed the method return value
-     * @throws \Exception
      */
     public function __call($name, $params)
     {
-        $property = new Property($name);
+        $action = substr($name, 0, 3);
+        $actions = ['set', 'get', 'has', 'rem'];
+        if (array_search($action, $actions) === false) {
+            parent::__call($name, $params);
+        }
 
-        $key = $property->getKey();
-        $name = $property->getName();
-        $action = $property->getAction();
+        $restName = substr($name, 3);
+        $key = Inflector::camel2id($restName, '_');
 
-        // remove property of object
+        // remove
         if ($action == 'rem') {
-            $this->__unset($name);
+            $this->__unset($key);
             return $this;
         }
 
-        // check availability or not
+        // checkout
         if ($action == 'has') {
-            $has = $this->__isset($name);
+            $has = $this->__isset($key);
             return $has;
         }
 
-        // set property of object
+        // setter method
         if ($action == 'set') {
             if (sizeof($params) > 0) {
-                $this->__set($name, $params[0]);
+                $this->__set($key, $params[0]);
                 return $this;
             }
             else {
@@ -188,59 +210,11 @@ class Object extends \yii\base\Object
             }
         }
 
-        // get property of object
+        // getter method
         if ($action == 'get') {
             $default = sizeof($params) > 0 ? $params[0] : null;
-
-            // if it exists
-            if ($this->__isset($property)) {
-                return $this->__get($property);
-            }
-
-            return $default;
+            return AH::getValue($this->properties, $key, $default);
         }
-
-        // unauthorized activity
-        return parent::__call($name, $params);
-    }
-
-    /**
-     * Converting an object to its base state,
-     * that is clearing all the properties that
-     * make it distinct.
-     *
-     * @return bool
-     */
-    public function __toEmpty()
-    {
-        $this->properties = [];
-        return true;
-    }
-
-    /**
-     * Converting an object to a string will
-     * be effective when we want to send an
-     * object to another server.
-     *
-     * @return string
-     */
-    public function __toJson()
-    {
-        $array = $this->__toArray();
-        return Json::encode($array);
-    }
-
-    /**
-     * Converting an object to a array will
-     * be effective, like when we want to convert
-     * an object to json string.
-     *
-     * @return array
-     */
-    public function __toArray()
-    {
-        $properties = $this->properties;
-        return $this->__toArrayMap($properties);
     }
 
     /**
@@ -250,16 +224,16 @@ class Object extends \yii\base\Object
      * @param array $array
      * @return array
      */
-    private function __toArrayMap(array $array)
+    private function __arrayMap(array $array)
     {
         $output = [];
 
         foreach ($array as $item => $value) {
             if ($value instanceof Object) {
-                $output[$item] = $value->__toArray();
+                $output[$item] = $value->_array();
             }
             else if (is_array($value)) {
-                $output[$item] = $this->__toArrayMap($value);
+                $output[$item] = $this->__arrayMap($value);
             }
             else {
                 $output[$item] = $value;

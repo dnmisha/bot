@@ -1,84 +1,150 @@
-<?php namespace bot\base;
+<?php
 
-use bot\object\Chat;
+use bot\helper\API;
+use yii\base\Object;
 use bot\object\User;
+use bot\object\Chat;
 use bot\helper\Token;
 use yii\helpers\Json;
+use bot\helper\RegEx;
 use bot\object\Update;
+use yii\db\Connection;
+use yii\log\FileTarget;
+use bot\base\Translator;
 use bot\helper\Callback;
-use bot\helper\Comparator;
+use yii\caching\FileCache;
 use yii\helpers\ArrayHelper as AH;
+use yii\base\InvalidParamException;
 
 /**
  * Bots are third-party applications that run inside Telegram.
- * Users can interact with bots by sending them messages, commands and inline requests.
+ * Users can interact with bots by sending them messages,
+ * commands and inline requests.
+ *
  * You control your bots using HTTPS requests to our bot API.
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class Bot
  * @package bot
  * @link https://core.telegram.org/bots
  */
-class Bot extends \yii\base\Object
+class Bot extends Object
 {
 
     /**
-     * The telegram's bot id
+     * add-ons: This helps developers to create
+     * bot with multi-languages.
+     */
+    use Translator;
+
+    /**
      * @var int
      */
     public static $id;
 
     /**
-     * The telegram's bot private key
      * @var string
      */
     public static $key;
 
     /**
-     * The telegram's bot token
      * @var string
      */
     public static $token;
 
     /**
-     * The telegram's bot api
      * @var API
      */
     public static $api;
 
     /**
-     * Telegram send update,
-     * and catch in update object.
-     *
-     * @var Update
+     * @var string
+     */
+    public static $username;
+
+    /**
+     * @var string of the Bot path that show where is
+     * the Bot in yii2 project.
+     */
+    public static $path;
+
+    /**
+     * @var string of the Bot link in telegram server
+     */
+    public static $link;
+
+    /**
+     * @var Update that sent from telegram server
      */
     public static $update;
 
     /**
-     * Who send update
-     * @var User
+     * @var User who sent update
      */
     public static $user;
 
     /**
-     * The user is hosted in a chat
-     * @var Chat
+     * @var Chat that user sent update from that
      */
     public static $chat;
 
     /**
-     * The bot properties
-     * @var array
+     * @var Connection
+     */
+    public static $db;
+
+    /**
+     * @var FileCache
+     */
+    public static $cache;
+
+    /**
+     * @var array of Bot properties
      */
     public static $configs = [];
+
+    /**
+     * set the database connection.
+     * By default, the "db" application component is used
+     * as the database connection. You may override this method if you
+     * want to use a different database connection.
+     *
+     * @param Connection $db
+     */
+    public static function setDb(Connection $db)
+    {
+        self::$db = $db;
+    }
+
+    /**
+     * Returns the database connection
+     * component.
+     *
+     * @return \yii\db\Connection the database
+     * connection.
+     */
+    public static function getDb()
+    {
+        if (self::$db instanceof Connection) {
+            return self::$db;
+        }
+
+        $dbs = Yii::$app->getDb();
+        if (is_array($dbs) && sizeof($dbs) > 0) {
+            return $dbs[0];
+        }
+
+        return $dbs;
+    }
 
     /**
      * Checks if a property is set, i.e.
      * defined and not null.
      *
-     * Note that if the property is not defined,
+     * Note:
+     * that if the property is not defined,
      * false will be returned.
      *
      * @param string $key the property name or the event name
@@ -93,7 +159,8 @@ class Bot extends \yii\base\Object
     /**
      * Sets an object property to null.
      *
-     * Note that if the property is not defined,
+     * Note:
+     * that if the property is not defined,
      * this method will do nothing.
      *
      * If the property is read-only,
@@ -102,7 +169,7 @@ class Bot extends \yii\base\Object
      * @param string $key the property name
      * @return true
      */
-    public static function remove($key)
+    public static function rem($key)
     {
         AH::remove(self::$configs, $key);
         return true;
@@ -125,8 +192,9 @@ class Bot extends \yii\base\Object
      * Returns the value of an object property.
      *
      * @param string $key the property name
-     * @param mixed $default the default value to be returned if the specified array
-     * key does not exist. Not used when getting value from an object.
+     * @param mixed $default the default value to be returned if
+     * the specified array key does not exist. Not used when getting
+     * value from an object.
      *
      * @return mixed
      */
@@ -137,7 +205,77 @@ class Bot extends \yii\base\Object
     }
 
     /**
-     * New incoming message of text.
+     * Logs an error message.
+     * An error message is typically logged when an unrecoverable error occurs
+     * during the execution of an application.
+     * @param string|array $message the message to be logged. This can be a simple string or a more
+     * complex data structure, such as array.
+     */
+    public static function error($message)
+    {
+        \Yii::error($message, 'bot');
+    }
+
+    /**
+     * Logs a warning message.
+     * A warning message is typically logged when an error occurs while the execution
+     * can still continue.
+     * @param string|array $message the message to be logged. This can be a simple string or a more
+     * complex data structure, such as array.
+     */
+    public static function warning($message)
+    {
+        \Yii::warning($message, 'bot');
+    }
+
+    /**
+     * Logs an informative message.
+     * An informative message is typically logged by an application to keep record of
+     * something important (e.g. an administrator logs in).
+     * @param string|array $message the message to be logged. This can be a simple string or a more
+     * complex data structure, such as array.
+     */
+    public static function info($message)
+    {
+        \Yii::info($message, 'bot');
+    }
+
+    /**
+     * Marks the beginning of a code block for profiling.
+     * This has to be matched with a call to [[endProfile]] with the same category name.
+     * The begin- and end- calls must also be properly nested. For example,
+     *
+     * ```php
+     * \Yii::beginProfile('block1');
+     * // some code to be profiled
+     *     \Yii::beginProfile('block2');
+     *     // some other code to be profiled
+     *     \Yii::endProfile('block2');
+     * \Yii::endProfile('block1');
+     * ```
+     * @param string $token token for the code block
+     * @see endProfile()
+     */
+    public static function beginProfile($token)
+    {
+        \Yii::beginProfile($token, 'bot');
+    }
+
+    /**
+     * Marks the end of a code block for profiling.
+     * This has to be matched with a previous call to
+     * [[beginProfile]] with the same category name.
+     *
+     * @param string $token token for the code block
+     * @see beginProfile()
+     */
+    public static function endProfile($token)
+    {
+        \Yii::endProfile($token, 'bot');
+    }
+
+    /**
+     * New message
      *
      * @param string $pattern
      * @param string|array|callable $callback
@@ -145,13 +283,16 @@ class Bot extends \yii\base\Object
      */
     public static function text($pattern, $callback)
     {
-        if (self::$update->hasMessage()) {
+        if (
+            self::$update instanceof Update &&
+            self::$update->hasMessage()
+        ) {
             $message = self::$update->getMessage();
             if ($message->hasText()) {
                 $params = self::$configs;
                 $text = $message->getText();
-                if (Comparator::compare($pattern, $text, $params)) {
-                    Callback::call($callback, $params);
+                if (RegEx::compare($pattern, $text, $params)) {
+                    Callback::apply($callback, $params);
                     return true;
                 }
             }
@@ -170,13 +311,16 @@ class Bot extends \yii\base\Object
      */
     public static function editedText($pattern, $callback)
     {
-        if (self::$update->hasEditedMessage()) {
+        if (
+            self::$update instanceof Update &&
+            self::$update->hasEditedMessage()
+        ) {
             $message = self::$update->getEditedMessage();
             if ($message->hasText()) {
                 $params = self::$configs;
                 $text = $message->getText();
-                if (Comparator::compare($pattern, $text, $params)) {
-                    Callback::call($callback, $params);
+                if (RegEx::compare($pattern, $text, $params)) {
+                    Callback::apply($callback, $params);
                     return true;
                 }
             }
@@ -194,13 +338,16 @@ class Bot extends \yii\base\Object
      */
     public static function channelText($pattern, $callback)
     {
-        if (self::$update->hasChannelPost()) {
+        if (
+            self::$update instanceof Update &&
+            self::$update->hasChannelPost()
+        ) {
             $message = self::$update->getChannelPost();
             if ($message->hasText()) {
                 $params = self::$configs;
                 $text = $message->getText();
-                if (Comparator::compare($pattern, $text, $params)) {
-                    Callback::call($callback, $params);
+                if (RegEx::compare($pattern, $text, $params)) {
+                    Callback::apply($callback, $params);
                     return true;
                 }
             }
@@ -219,13 +366,16 @@ class Bot extends \yii\base\Object
      */
     public static function editedChannelText($pattern, $callback)
     {
-        if (self::$update->hasEditedChannelPost()) {
+        if (
+            self::$update instanceof Update &&
+            self::$update->hasEditedChannelPost()
+        ) {
             $message = self::$update->getEditedChannelPost();
             if ($message->hasText()) {
                 $params = self::$configs;
                 $text = $message->getText();
-                if (Comparator::compare($pattern, $text, $params)) {
-                    Callback::call($callback, $params);
+                if (RegEx::compare($pattern, $text, $params)) {
+                    Callback::apply($callback, $params);
                     return true;
                 }
             }
@@ -243,15 +393,16 @@ class Bot extends \yii\base\Object
      */
     public static function query($pattern, $callback)
     {
-        if (self::$update->hasInlineQuery()) {
+        if (
+            self::$update instanceof Update &&
+            self::$update->hasInlineQuery()
+        ) {
             $inline = self::$update->getInlineQuery();
-            if ($inline->hasQuery()) {
-                $params = self::$configs;
-                $query = $inline->getQuery();
-                if (Comparator::compare($pattern, $query, $params)) {
-                    Callback::call($callback, $params);
-                    return true;
-                }
+            $params = self::$configs;
+            $query = $inline->getQuery();
+            if (RegEx::compare($pattern, $query, $params)) {
+                Callback::apply($callback, $params);
+                return true;
             }
         }
 
@@ -268,15 +419,16 @@ class Bot extends \yii\base\Object
      */
     public static function result($pattern, $callback)
     {
-        if (self::$update->hasChosenInlineResult()) {
+        if (
+            self::$update instanceof Update &&
+            self::$update->hasChosenInlineResult()
+        ) {
             $result = self::$update->getChosenInlineResult();
-            if ($result->hasResultId()) {
-                $params = self::$configs;
-                $result_id = $result->getResultId();
-                if (Comparator::compare($pattern, $result_id, $params)) {
-                    Callback::call($callback, $params);
-                    return true;
-                }
+            $params = self::$configs;
+            $result_id = $result->getResultId();
+            if (RegEx::compare($pattern, $result_id, $params)) {
+                Callback::apply($callback, $params);
+                return true;
             }
         }
 
@@ -292,13 +444,16 @@ class Bot extends \yii\base\Object
      */
     public static function data($pattern, $callback)
     {
-        if (self::$update->hasCallbackQuery()) {
+        if (
+            self::$update instanceof Update &&
+            self::$update->hasCallbackQuery()
+        ) {
             $cQuery = self::$update->getCallbackQuery();
             if ($cQuery->hasData()) {
                 $params = self::$configs;
                 $data = $cQuery->getData();
-                if (Comparator::compare($pattern, $data, $params)) {
-                    Callback::call($callback, $params);
+                if (RegEx::compare($pattern, $data, $params)) {
+                    Callback::apply($callback, $params);
                     return true;
                 }
             }
@@ -317,15 +472,16 @@ class Bot extends \yii\base\Object
      */
     public static function shipping($pattern, $callback)
     {
-        if (self::$update->hasShippingQuery()) {
+        if (
+            self::$update instanceof Update &&
+            self::$update->hasShippingQuery()
+        ) {
             $shipping = self::$update->getShippingQuery();
-            if ($shipping->hasId()) {
-                $params = self::$configs;
-                $id = $shipping->getId();
-                if (Comparator::compare($pattern, $id, $params)) {
-                    Callback::call($callback, $params);
-                    return true;
-                }
+            $params = self::$configs;
+            $id = $shipping->getId();
+            if (RegEx::compare($pattern, $id, $params)) {
+                Callback::apply($callback, $params);
+                return true;
             }
         }
 
@@ -342,15 +498,16 @@ class Bot extends \yii\base\Object
      */
     public static function preCheckout($pattern, $callback)
     {
-        if (self::$update->hasPreCheckoutQuery()) {
+        if (
+            self::$update instanceof Update &&
+            self::$update->hasPreCheckoutQuery()
+        ) {
             $query = self::$update->getPreCheckoutQuery();
-            if ($query->hasId()) {
-                $params = self::$configs;
-                $id = $query->getId();
-                if (Comparator::compare($pattern, $id, $params)) {
-                    Callback::call($callback, $params);
-                    return true;
-                }
+            $params = self::$configs;
+            $id = $query->getId();
+            if (RegEx::compare($pattern, $id, $params)) {
+                Callback::apply($callback, $params);
+                return true;
             }
         }
 
@@ -366,9 +523,9 @@ class Bot extends \yii\base\Object
     {
         self::$configs = [];
         $update = file_get_contents('php://input');
-        
+
         if (
-            self::$update == null && 
+            self::$update == null &&
             !empty($update) && is_string($update)
         ) {
             $this->setUpdate($update);
@@ -378,7 +535,6 @@ class Bot extends \yii\base\Object
     }
 
     /**
-     * Set the telegram's bot id.
      * @param int $id
      */
     public function setId($id)
@@ -387,13 +543,13 @@ class Bot extends \yii\base\Object
             self::$id = $id;
 
             if (self::$key !== null) {
-                $this->setToken(self::$id . ':' . self::$key);
+                $token = self::$id . ':' . self::$key;
+                $this->setToken($token);
             }
         }
     }
 
     /**
-     * Set the telegram's bot private key.
      * @param string $key
      */
     public function setKey($key)
@@ -402,13 +558,13 @@ class Bot extends \yii\base\Object
             self::$key = $key;
 
             if (self::$id !== null) {
-                $this->setToken(self::$id . ':' . self::$key);
+                $token = self::$id . ':' . self::$key;
+                $this->setToken($token);
             }
         }
     }
 
     /**
-     * Set the telegram's bot id and private key.
      * @param string $token
      */
     public function setToken($token)
@@ -421,8 +577,59 @@ class Bot extends \yii\base\Object
     }
 
     /**
-     * Set Update, User, Chat object by telegram's update.
-     * @param string|array $update telegram send
+     * @param string $username
+     */
+    public function setUsername($username)
+    {
+        $string = strtolower($username);
+        if (strpos($string, '@') === 0) {
+            $string = substr($string, 1);
+        }
+
+        self::$username = $string;
+        self::$link = 'https://t.me/' . $string;
+
+        if (self::$path !== null) {
+            Yii::setAlias('@' . $string, self::$path);
+        }
+    }
+
+    /**
+     * @param string $path
+     */
+    public function setPath($path)
+    {
+        if (file_exists($path . '/.token')) {
+            $path = realpath($path);
+            self::$path = $path;
+
+            // cache
+            self::$cache = new FileCache([
+                'cachePath' => $path. '/cache'
+            ]);
+
+            // logs
+            Yii::$app->log->targets[] = new FileTarget([
+                'logFile' => $path . '/logs/bot.log',
+                'categories' => ['bot']
+            ]);
+
+            Yii::setAlias('@bots/bot', $path);
+            Yii::setAlias('@bot/src', $path . '/src');
+            Yii::setAlias('@bot/files', $path . '/files');
+            
+            if (self::$username !== null) {
+                Yii::setAlias('@' . self::$username, $path);
+            }
+        }
+        else {
+            $message = 'Not found ' . $path . '/.token';
+            throw new InvalidParamException($message);
+        }
+    }
+
+    /**
+     * @param string|array $update
      */
     public function setUpdate($update)
     {
