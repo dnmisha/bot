@@ -29,7 +29,7 @@ use bot\object\Message;
  * @method string getAction($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class sendChatAction
  * @package bot\method

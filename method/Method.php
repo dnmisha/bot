@@ -1,9 +1,11 @@
 <?php namespace bot\method;
 
-use bot\helper\Token;
 use bot\base\Request;
+use bot\helper\Token;
 use bot\object\Error;
 use bot\object\Object;
+use yii\helpers\Inflector;
+use yii\helpers\StringHelper;
 use yii\helpers\ArrayHelper as AH;
 use yii\base\UnknownClassException;
 
@@ -13,11 +15,11 @@ use yii\base\UnknownClassException;
  * We support GET and POST HTTP methods. Use either URL query string
  * or application/json or application/x-www-form-urlencoded or
  * multipart/form-data for passing parameters in Bot API requests.
- * On successful call, a JSON-object containing
+ * On successful call, a Bot-object containing
  * the result will be returned.
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class Method
  * @package bot\method
@@ -32,46 +34,40 @@ abstract class Method extends Request
      */
     public static function methodName()
     {
-        $nameSpace = self::className();
-        $className = str_replace('\\', '/' , $nameSpace);
-        $className = basename($className);
-        $methodName = lcfirst($className);
-        return $methodName;
+        $className = self::className();
+        $correctName = StringHelper::basename($className);
+        return lcfirst($correctName);
     }
 
     /**
-     * Method constructor.
-     * @param string $token the bot api server
+     * Request constructor.
+     * @param string|Token $token the bot token
      * @param array $params properties of object request
      */
-    public function __construct($token = null, $params = [])
+    public function __construct($token, $params = [])
     {
-        $this->__set('method', $this->methodName());
-        \Yii::configure($this, $params);
-        parent::__construct($token);
+        $this->set('method', $this->methodName());
+        parent::__construct($token, $params);
     }
 
     /**
      * Send this request by old token, you can use next token by
      * self::sendBy() method instead of this method.
      *
-     * @param array $params properties of object request
      * @return object of response
      */
-    public function send($params = [])
+    public function send()
     {
-        $res = parent::send($params);
+        $res = parent::send();
 
         // success
-        if (
-            $res['ok'] !== false &&
-            AH::keyExists('result', $res)
-        ) {
+        if ($res['ok'] && isset($res['result'])) {
             $result = $res['result'];
             if (is_array($result)) {
                 $className = $this->response();
                 if (class_exists($className)) {
-                    return $this->joinRelations($className, $result);
+                    $value = $result;
+                    return $this->__createResponse($className, $value);
                 }
             }
 
@@ -80,15 +76,14 @@ abstract class Method extends Request
 
         // warning
         if (is_array($res)) {
+            $id = $this->token->id;
             $error = new Error($res);
             $code = $error->getErrorCode();
             $description = $error->getDescription();
-            $id = (new Token($this->token))->getId();
 
-            if (YII_DEBUG === true) {
-                $message = '[' . $id. '][' . $code . '] ' . $description;
-                \Yii::warning($message, self::className());
-            }
+            $message = '[' . $id. '][' . $code . '] ' . $description;
+            \Yii::warning(self::className() . ': ' . $message, 'bot');
+            \Yii::warning($message, self::className());
 
             return $error;
         }
@@ -98,18 +93,18 @@ abstract class Method extends Request
     }
 
     /**
-     * Finding the relationships of each object and connecting
-     * them to helps us to access relationships of object.
+     * Finding responses, creating and
+     * return them.
      *
-     * @param string $className the relation class's name
-     * @param mixed $value the value to set relation
-     * @return mixed
+     * @param string $className the relation class object
+     * @param array $params all properties of object
+     * @return array
      * @throws UnknownClassException
      */
-    private function joinRelations($className, $value)
+    private function __createResponse($className, $params)
     {
-        if (AH::isAssociative($value)) {
-            $class = new $className($value);
+        if (AH::isAssociative($params)) {
+            $class = new $className($params);
             if ($class instanceof Object) {
                 return $class;
             }
@@ -118,17 +113,17 @@ abstract class Method extends Request
             throw new UnknownClassException($message);
         }
 
-        if (AH::isIndexed($value)) {
+        if (AH::isIndexed($params)) {
             $output = [];
-            foreach ($value as $_name => $_value) {
-                $relation = $this->joinRelations($className, $_value);
-                $output[$_name] = $relation;
+            foreach ($params as $name => $value) {
+                $relation = $this->__createResponse($className, $value);
+                $output[$name] = $relation;
             }
 
             return $output;
         }
 
-        return $value;
+        return $params;
     }
 
     /**

@@ -44,7 +44,7 @@ use bot\object\MaskPosition;
  * @method MaskPosition getMaskPosition($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class createNewStickerSet
  * @package bot\method

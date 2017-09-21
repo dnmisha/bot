@@ -22,7 +22,7 @@ use bot\object\UserProfilePhotos;
  * @method int getLimit($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class getUserProfilePhotos
  * @package bot\method

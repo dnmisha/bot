@@ -10,7 +10,7 @@ use bot\object\Error;
  * @method true|Error send()
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class deleteWebhook
  * @package bot\method
