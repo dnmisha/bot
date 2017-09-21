@@ -46,7 +46,7 @@ use bot\keyboard\InlineKeyboardMarkup;
  * @method int getThumbHeight($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class InlineQueryResultLocation
  * @package bot\inline

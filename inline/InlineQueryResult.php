@@ -1,6 +1,7 @@
 <?php namespace bot\inline;
 
 use bot\base\Object;
+use yii\helpers\StringHelper;
 
 /**
  * This object represents one result of an inline query.
@@ -32,7 +33,7 @@ use bot\base\Object;
  * @method string getId($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class InlineQueryResult
  * @package bot\inline
@@ -50,14 +51,13 @@ abstract class InlineQueryResult extends Object
      */
     public static function typeName()
     {
-        $nameSpace = self::className();
-        $className = basename(str_replace('\\', '/', $nameSpace));
+        $className = self::className();
+        $baseName = StringHelper::basename($className);
 
         $mainName = 'InlineQueryResult';
         $replaces = [$mainName, $mainName . 'Cached'];
-        $replaced = str_replace($replaces, '', $className);
-
-        return strtolower($replaced);
+        $correctType = str_replace($replaces, '', $baseName);
+        return strtolower($correctType);
     }
 
     /**

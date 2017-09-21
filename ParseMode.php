@@ -19,7 +19,7 @@
  * The API currently supports only the following named HTML entities: &lt;, &gt;, &amp; and &quot;.
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class ParseMode
  * @package bot
