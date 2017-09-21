@@ -111,8 +111,8 @@ class BotController extends Controller
             }
             else {
                 $message = 'Error: Not found ' . $path;
-				
-				Bot::error($message);
+		
+		Bot::error($message);
                 throw new Exception($message);
             }
         }
@@ -142,14 +142,13 @@ class BotController extends Controller
             $path = realpath($basePath . '/' . $file);
 
             if (
-				file_exists($path) && !is_dir($path) &&
-				strpos($path, $basePath) === 0
-			)
-            {
-				\Yii::$app->response->sendFile($path, basename($path), [
+		file_exists($path) && !is_dir($path) &&
+		strpos($path, $basePath) === 0
+            ) {
+		\Yii::$app->response->sendFile($path, basename($path), [
                     'inline' => true
                 ]);
-			}
+            }
             else {
                 $message = 'Error: Not found ' . $file;
                 throw new NotFoundHttpException($message);
