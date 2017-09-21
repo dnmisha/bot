@@ -4,17 +4,13 @@
  * This object contains information about an
  * incoming shipping query.
  *
- * @method bool hasId()
- * @method bool hasFrom()
- * @method bool hasInvoicePayload()
- * @method bool hasShippingAddress()
- * @method string getId($default = null)
- * @method User getFrom($default = null)
- * @method string getInvoicePayload($default = null)
- * @method ShippingAddress getShippingAddress($default = null)
+ * @method string getId()
+ * @method User getFrom()
+ * @method string getInvoicePayload()
+ * @method ShippingAddress getShippingAddress()
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class ShippingQuery
  * @package bot\object

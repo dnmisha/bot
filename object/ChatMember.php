@@ -3,8 +3,6 @@
 /**
  * This object contains information about one member of the chat.
  *
- * @method bool hasUser()
- * @method bool hasStatus()
  * @method bool hasUntilDate()
  * @method bool hasCanBeEdited()
  * @method bool hasCanChangeInfo()
@@ -19,8 +17,8 @@
  * @method bool hasCanSendMediaMessages()
  * @method bool hasCanSendOtherMessages()
  * @method bool hasCanAddWebPagePreviews()
- * @method User getUser($default = null)
- * @method string getStatus($default = null)
+ * @method User getUser()
+ * @method string getStatus()
  * @method int getUntilDate($default = null)
  * @method bool getCanBeEdited($default = null)
  * @method bool getCanChangeInfo($default = null)
@@ -37,7 +35,7 @@
  * @method bool getCanAddWebPagePreviews($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class ChatMember
  * @package bot\object
@@ -47,7 +45,6 @@ class ChatMember extends Object
 {
 
     /**
-     * Check out the user status is Creator or not.
      * @return bool
      */
     public function isCreator()
@@ -56,7 +53,6 @@ class ChatMember extends Object
     }
 
     /**
-     * Check out the user status is Administrator or not.
      * @return bool
      */
     public function isAdministrator()
@@ -65,7 +61,6 @@ class ChatMember extends Object
     }
 
     /**
-     * Check out the user status is Member or not.
      * @return bool
      */
     public function isMember()
@@ -74,7 +69,14 @@ class ChatMember extends Object
     }
 
     /**
-     * Check out the user status is Left or not.
+     * @return bool
+     */
+    public function isRestricted()
+    {
+        return $this->getStatus() == 'restricted';
+    }
+
+    /**
      * @return bool
      */
     public function isLeft()
@@ -83,7 +85,6 @@ class ChatMember extends Object
     }
 
     /**
-     * Check out the user status is Kicked or not.
      * @return bool
      */
     public function isKicked()

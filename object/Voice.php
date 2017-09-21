@@ -3,17 +3,15 @@
 /**
  * This object represents a voice note.
  *
- * @method bool hasFileId()
- * @method bool hasDuration()
  * @method bool hasMimeType()
  * @method bool hasFileSize()
- * @method string getFileId($default = null)
- * @method int getDuration($default = null)
+ * @method string getFileId()
+ * @method int getDuration()
  * @method string getMimeType($default = null)
  * @method int getFileSize($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class Voice
  * @package bot\object

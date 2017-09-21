@@ -3,21 +3,18 @@
 /**
  * This object represents a Telegram user or bot.
  *
- * @method bool hasId()
- * @method bool hasIsBot()
- * @method bool hasFirstName()
  * @method bool hasLastName()
  * @method bool hasUsername()
  * @method bool hasLanguageCode()
- * @method int getId($default = null)
- * @method bool getIsBot($default = null)
- * @method string getFirstName($default = null)
+ * @method int getId()
+ * @method bool getIsBot()
+ * @method string getFirstName()
  * @method string getLastName($default = null)
  * @method string getUsername($default = null)
  * @method string getLanguageCode($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class User
  * @package bot\object
@@ -25,6 +22,14 @@
  */
 class User extends Object
 {
+
+    /**
+     * @return bool True, if this user is a bot
+     */
+    public function isBot()
+    {
+        return $this->getIsBot() == true;
+    }
 
     /**
      * Every object have relations with other object,

@@ -4,23 +4,18 @@
  * This object contains basic information about a
  * successful payment.
  *
- * @method bool hasCurrency()
- * @method bool hasTotalAmount()
- * @method bool hasInvoicePayload()
  * @method bool hasShippingOptionId()
  * @method bool hasOrderInfo()
- * @method bool hasTelegramPaymentChargeId()
- * @method bool hasProviderPaymentChargeId()
- * @method string getCurrency($default = null)
- * @method int getTotalAmount($default = null)
- * @method string getInvoicePayload($default = null)
+ * @method string getCurrency()
+ * @method int getTotalAmount()
+ * @method string getInvoicePayload()
  * @method string getShippingOptionId($default = null)
  * @method OrderInfo getOrderInfo($default = null)
- * @method string getTelegramPaymentChargeId($default = null)
- * @method string getProviderPaymentChargeId($default = null)
+ * @method string getTelegramPaymentChargeId()
+ * @method string getProviderPaymentChargeId()
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class SuccessfulPayment
  * @package bot\object

@@ -4,23 +4,18 @@
  * This object contains information about an
  * incoming pre-checkout query.
  *
- * @method bool hasId()
- * @method bool hasFrom()
- * @method bool hasCurrency()
- * @method bool hasTotalAmount()
- * @method bool hasInvoicePayload()
  * @method bool hasShippingOptionId()
  * @method bool hasOrderInfo()
- * @method string getId($default = null)
- * @method User getFrom($default = null)
- * @method string getCurrency($default = null)
- * @method int getTotalAmount($default = null)
- * @method string getInvoicePayload($default = null)
+ * @method string getId()
+ * @method User getFrom()
+ * @method string getCurrency()
+ * @method int getTotalAmount()
+ * @method string getInvoicePayload()
  * @method string getShippingOptionId($default = null)
  * @method OrderInfo getOrderInfo($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class PreCheckoutQuery
  * @package bot\object

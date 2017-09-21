@@ -4,7 +4,6 @@
  * This object represents an incoming update.
  * At most one of the optional parameters can be present in any given update.
  *
- * @method bool hasUpdateId()
  * @method bool hasMessage()
  * @method bool hasEditedMessage()
  * @method bool hasChannelPost()
@@ -14,7 +13,7 @@
  * @method bool hasCallbackQuery()
  * @method bool hasShippingQuery()
  * @method bool hasPreCheckoutQuery()
- * @method int getUpdateId($default = null)
+ * @method int getUpdateId()
  * @method Message getMessage($default = null)
  * @method Message getEditedMessage($default = null)
  * @method Message getChannelPost($default = null)
@@ -26,7 +25,7 @@
  * @method PreCheckoutQuery getPreCheckoutQuery($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class Update
  * @package bot\object

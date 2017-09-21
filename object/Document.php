@@ -3,19 +3,18 @@
 /**
  * This object represents a general file (as opposed to photos, voice messages and audio files).
  *
- * @method bool hasFileId()
  * @method bool hasThumb()
  * @method bool hasFileName()
  * @method bool hasMimeType()
  * @method bool hasFileSize()
- * @method string getFileId($default = null)
+ * @method string getFileId()
  * @method PhotoSize getThumb($default = null)
  * @method string getFileName($default = null)
  * @method string getMimeType($default = null)
  * @method int getFileSize($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class Document
  * @package bot\object

@@ -4,21 +4,18 @@
  * This object represents a game. Use BotFather to create and edit games,
  * their short names will act as unique identifiers.
  *
- * @method bool hasTitle()
- * @method bool hasDescription()
- * @method bool hasPhoto()
  * @method bool hasText()
  * @method bool hasTextEntities()
  * @method bool hasAnimation()
- * @method string getTitle($default = null)
- * @method string getDescription($default = null)
- * @method PhotoSize[] getPhoto($default = null)
+ * @method string getTitle()
+ * @method string getDescription()
+ * @method PhotoSize[] getPhoto()
  * @method string getText($default = null)
  * @method MessageEntity[] getTextEntities($default = null)
  * @method Animation getAnimation($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class Game
  * @package bot\object

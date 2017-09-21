@@ -9,15 +9,14 @@
  * Info:
  * Maximum file size to download is 20 MB
  *
- * @method bool hasFileId()
  * @method bool hasFileSize()
  * @method bool hasFilePath()
- * @method string getFileId($default = null)
+ * @method string getFileId()
  * @method int getFileSize($default = null)
  * @method string getFilePath($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class File
  * @package bot\object

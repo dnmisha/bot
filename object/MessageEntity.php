@@ -4,19 +4,16 @@
  * This object represents one special entity in a text message.
  * For example, hashtags, usernames, URLs, etc.
  *
- * @method bool hasType()
- * @method bool hasOffset()
- * @method bool hasLength()
  * @method bool hasUrl()
  * @method bool hasUser()
- * @method string getType($default = null)
- * @method int getOffset($default = null)
- * @method int getLength($default = null)
+ * @method string getType()
+ * @method int getOffset()
+ * @method int getLength()
  * @method string getUrl($default = null)
  * @method User getUser($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class MessageEntity
  * @package bot\object

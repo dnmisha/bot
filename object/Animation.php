@@ -5,19 +5,18 @@
  * chats (check out Lumberjack for an example). This object represents an animation
  * file to be displayed in the message containing a game.
  *
- * @method bool hasFileId()
  * @method bool hasThumb()
  * @method bool hasFileName()
  * @method bool hasMimeType()
  * @method bool hasFileSize()
- * @method string getFileId($default = null)
+ * @method string getFileId()
  * @method PhotoSize getThumb($default = null)
  * @method string getFileName($default = null)
  * @method string getMimeType($default = null)
  * @method int getFileSize($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class Animation
  * @package bot\object

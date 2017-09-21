@@ -3,16 +3,15 @@
 /**
  * This object represents a message.
  *
- * @method bool hasMessageId()
  * @method bool hasFrom()
- * @method bool hasDate()
- * @method bool hasChat()
  * @method bool hasForwardFrom()
  * @method bool hasForwardFromChat()
  * @method bool hasForwardFromMessageId()
+ * @method bool hasForwardSignature()
  * @method bool hasForwardDate()
  * @method bool hasReplyToMessage()
  * @method bool hasEditDate()
+ * @method bool hasAuthorSignature()
  * @method bool hasText()
  * @method bool hasEntities()
  * @method bool hasAudio()
@@ -41,16 +40,18 @@
  * @method bool hasPinnedMessage()
  * @method bool hasInvoice()
  * @method bool hasSuccessfulPayment()
- * @method int getMessageId($default = null)
+ * @method int getMessageId()
  * @method User getFrom($default = null)
- * @method int getDate($default = null)
- * @method Chat getChat($default = null)
+ * @method int getDate()
+ * @method Chat getChat()
  * @method User getForwardFrom($default = null)
  * @method Chat getForwardFromChat($default = null)
  * @method int getForwardFromMessageId($default = null)
+ * @method string getForwardSignature($default = null)
  * @method int getForwardDate($default = null)
  * @method Message getReplyToMessage($default = null)
  * @method int getEditDate($default = null)
+ * @method string getAuthorSignature($default = null)
  * @method string getText($default = null)
  * @method MessageEntity[] getEntities($default = null)
  * @method Audio getAudio($default = null)
@@ -81,7 +82,7 @@
  * @method SuccessfulPayment getSuccessfulPayment($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class Message
  * @package bot\object

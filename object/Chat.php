@@ -3,8 +3,6 @@
 /**
  * This object represents a chat.
  *
- * @method bool hasId()
- * @method bool hasType()
  * @method bool hasTitle()
  * @method bool hasUsername()
  * @method bool hasFirstName()
@@ -14,8 +12,8 @@
  * @method bool hasDescription()
  * @method bool hasInviteLink()
  * @method bool hasPinnedMessage()
- * @method int getId($default = null)
- * @method string getType($default = null)
+ * @method int getId()
+ * @method string getType()
  * @method string getTitle($default = null)
  * @method string getUsername($default = null)
  * @method string getFirstName($default = null)
@@ -27,7 +25,7 @@
  * @method Message getPinnedMessage($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class Chat
  * @package bot\object

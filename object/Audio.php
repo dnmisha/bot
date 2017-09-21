@@ -3,21 +3,19 @@
 /**
  * This object represents an audio file to be treated as music by the Telegram clients.
  *
- * @method bool hasFileId()
- * @method bool hasDuration()
  * @method bool hasPerformer()
  * @method bool hasTitle()
  * @method bool hasMimeType()
  * @method bool hasFileSize()
- * @method string getFileId($default = null)
- * @method int getDuration($default = null)
+ * @method string getFileId()
+ * @method int getDuration()
  * @method string getPerformer($default = null)
  * @method string getTitle($default = null)
  * @method string getMimeType($default = null)
  * @method int getFileSize($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class Audio
  * @package bot\object

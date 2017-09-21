@@ -3,21 +3,15 @@
 /**
  * This object represents a shipping address.
  *
- * @method bool hasCountryCode()
- * @method bool hasState()
- * @method bool hasCity()
- * @method bool hasStreetLine1()
- * @method bool hasStreetLine2()
- * @method bool hasPostCode()
- * @method bool getCountryCode($default = null)
- * @method bool getState($default = null)
- * @method bool getCity($default = null)
- * @method bool getStreetLine1($default = null)
- * @method bool getStreetLine2($default = null)
- * @method bool getPostCode($default = null)
+ * @method bool getCountryCode()
+ * @method bool getState()
+ * @method bool getCity()
+ * @method bool getStreetLine1()
+ * @method bool getStreetLine2()
+ * @method bool getPostCode()
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class ShippingAddress
  * @package bot\object

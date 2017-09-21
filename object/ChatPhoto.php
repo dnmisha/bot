@@ -3,13 +3,11 @@
 /**
  * This object represents a chat photo.
  *
- * @method bool hasSmallFileId()
- * @method bool hasBigFileId()
- * @method bool getSmallFileId($default = null)
- * @method bool getBigFileId($default = null)
+ * @method bool getSmallFileId()
+ * @method bool getBigFileId()
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class ChatPhoto
  * @package bot\object

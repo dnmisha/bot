@@ -3,13 +3,11 @@
 /**
  * This object represent a user's profile pictures.
  *
- * @method bool hasTotalCount()
- * @method bool hasPhotos()
- * @method int getTotalCount($default = null)
- * @method PhotoSize[][] getPhotos($default = null)
+ * @method int getTotalCount()
+ * @method PhotoSize[] getPhotos()
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class UserProfilePhotos
  * @package bot\object

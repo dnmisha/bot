@@ -3,17 +3,13 @@
 /**
  * This object represents a sticker set.
  *
- * @method bool hasName()
- * @method bool hasTitle()
- * @method bool hasContainsMasks()
- * @method bool hasStickers()
- * @method string getName($default = null)
- * @method string getTitle($default = null)
- * @method bool getContainsMasks($default = null)
- * @method Sticker[] getStickers($default = null)
+ * @method string getName()
+ * @method string getTitle()
+ * @method bool getContainsMasks()
+ * @method Sticker[] getStickers()
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class StickerSet
  * @package bot\object

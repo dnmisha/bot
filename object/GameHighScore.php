@@ -3,15 +3,12 @@
 /**
  * This object represents one row of the high scores table for a game.
  *
- * @method bool hasPosition()
- * @method bool hasUser()
- * @method bool hasScore()
- * @method int getPosition($default = null)
- * @method User getUser($default = null)
- * @method int getScore($default = null)
+ * @method int getPosition()
+ * @method User getUser()
+ * @method int getScore()
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class GameHighScore
  * @package bot\object

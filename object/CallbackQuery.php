@@ -12,23 +12,20 @@
  * you call answerCallbackQuery. It is, therefore, necessary to react by calling answerCallbackQuery
  * even if no notification to the user is needed (e.g., without specifying any of the optional parameters).
  *
- * @method bool hasId()
- * @method bool hasFrom()
  * @method bool hasMessage()
  * @method bool hasInlineMessageId()
- * @method bool hasChatInstance()
  * @method bool hasData()
  * @method bool hasGameShortName()
- * @method string getId($default = null)
- * @method User getFrom($default = null)
+ * @method string getId()
+ * @method User getFrom()
  * @method Message getMessage($default = null)
  * @method string getInlineMessageId($default = null)
- * @method string getChatInstance($default = null)
+ * @method string getChatInstance()
  * @method string getData($default = null)
  * @method string getGameShortName($default = null)
  *
  * @author Mehdi Khodayari <mehdi.khodayari.khoram@gmail.com>
- * @since 2.0.1
+ * @since 3.0.1
  *
  * Class CallbackQuery
  * @package bot\object
