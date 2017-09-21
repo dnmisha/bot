@@ -12,9 +12,9 @@ Method|Description
 getId()|Unique identifier for this user or bot
 isBot()|True, if this user is a bot
 getFirstName()|User‘s or bot’s first name
-hasLastName(), getLastName()|Optional. User‘s or bot’s last name
-hasUsername(), getUsername()|Optional. User‘s or bot’s username
-hasLanguageCode(), getLanguageCode()||Optional. IETF language tag of the user's language
+getLastName()|Optional. User‘s or bot’s last name
+getUsername()|Optional. User‘s or bot’s username
+getLanguageCode()||Optional. IETF language tag of the user's language
 
 ### Chat
 This object represents a chat.
@@ -23,15 +23,15 @@ Method|Description
 ------|-----------
 getId()|Unique identifier for this chat. This number may be greater than 32 bits and some programming languages may have difficulty/silent defects in interpreting it. But it is smaller than 52 bits, so a signed 64 bit integer or double-precision float type are safe for storing this identifier.
 getType()|Type of chat, can be either “private”, “group”, “supergroup” or “channel”
-hasTitle(), getTitle()|Optional. Title, for supergroups, channels and group chats
-hasUsername(), getUsername()|Optional. Username, for private chats, supergroups and channels if available
-hasFirstName(), getFirstName()|Optional. First name of the other party in a private chat
-hasLastName(), getLastName()|Optional. Last name of the other party in a private chat
-hasAllMembersAreAdministrators(), getAllMembersAreAdministrators()|Optional. True if a group has ‘All Members Are Admins’ enabled.
-hasPhoto(), getPhoto()|Optional. Chat photo. Returned only in getChat.
-hasDescription(), getDescription()|Optional. Description, for supergroups and channel chats. Returned only in getChat.
-hasInviteLink(), getInviteLink()|Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat.
-hasPinnedMessage(), getPinnedMessage()|Optional. Pinned message, for supergroups. Returned only in getChat.
+getTitle()|Optional. Title, for supergroups, channels and group chats
+getUsername()|Optional. Username, for private chats, supergroups and channels if available
+getFirstName()|Optional. First name of the other party in a private chat
+getLastName()|Optional. Last name of the other party in a private chat
+getAllMembersAreAdministrators()|Optional. True if a group has ‘All Members Are Admins’ enabled.
+getPhoto()|Optional. Chat photo. Returned only in getChat.
+getDescription()|Optional. Description, for supergroups and channel chats. Returned only in getChat.
+getInviteLink()|Optional. Chat invite link, for supergroups and channel chats. Returned only in getChat.
+getPinnedMessage()|Optional. Pinned message, for supergroups. Returned only in getChat.
 
 ### Message
 This object represents a message.
@@ -39,7 +39,7 @@ This object represents a message.
 Method|Description
 ------|-----------
 getMessageId()|Unique message identifier inside this chat
-getFrom(), hasFrom()|Optional. Sender, empty for messages sent to channels
+getFrom()|Optional. Sender, empty for messages sent to channels
 getDate()|Date the message was sent in Unix time
 getChat()|Conversation the message belongs to
 getForwardFrom()|Optional. For forwarded messages, sender of the original message
