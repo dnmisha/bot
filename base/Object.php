@@ -191,10 +191,11 @@ class Object extends \yii\base\Object
         // get property of object
         if ($action == 'get') {
             $default = sizeof($params) > 0 ? $params[0] : null;
-
+            // fix Illegal offset type in isset
+            $name = is_object($property)?$property->name:$property;
             // if it exists
-            if ($this->__isset($property)) {
-                return $this->__get($property);
+            if ($this->__isset($name)) {
+                return $this->__get($name);
             }
 
             return $default;
